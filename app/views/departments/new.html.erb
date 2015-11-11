@@ -1,0 +1,21 @@
+
+<div class=<"departments new">
+<h2>Create Department</h2>
+<%= error_messages_for(@department) %>
+<%= bootstrap_form_for(:department, :url => {:action => "create"}) do |f| %>
+<table summary="Department form fields">
+    <tr>
+	<th>Department Name</th>
+	<td><%= f.text_field(:dept_name) %></td>
+    </tr>
+	<tr>
+	<th>Department Manager</th>
+	<td><%= f.collection_select(:manager_id, User.all, :id, :username, {}, { :multiple => false } ) %></td>
+    </tr>
+	<tr>
+	</table>
+	<button type="submit" class="btn btn-primary">
+	Create Department
+	</button>
+<% end %>
+</div>

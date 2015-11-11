@@ -1,0 +1,68 @@
+<h2>Edit Issue</h2>
+<%= error_messages_for(@issue) %>
+<div class=”issues edit”>
+<%= bootstrap_form_for @issue do |f| %>
+	<table summary="Issue form fields">
+    <tr>
+	<th>Title</th>
+	<td><%= f.text_field(:title) %></td>
+    </tr>
+	<tr>
+	<th>Priority</th>
+	<td><%= f.select :priority, ["High", "Medium", "Low"] %></td>
+    </tr>
+	<tr>
+	<th>Summary</th>
+	<td><%= f.text_area(:summary) %></td>
+    </tr>
+	<tr>
+	<th>Status</th>
+	<td><%= f.select :status, ["Assigned", "Fixed", "Tested", "Done"] %></td>
+    </tr>
+	<tr>
+	<th>Assigned To</th>
+	<td><%= f.collection_select(:assigned_to, User.all, :id, :username, {}, { :multiple => false } ) %></td>
+    </tr>
+	<th>Time To Complete (Hours)</th>
+	<td><%= f.text_field(:time_to_complete) %></td>
+	</tr>
+	<th>Accepted?</th>
+	<td><%= f.select :accepted, [["Yes", 1], ["No", 0]] %></td>
+    </tr>
+	
+<% end %>
+</table>
+<button type="submit" class="btn btn-primary">
+	Update Issue
+</button>
+<% if can? :read, @issue%>
+	<%= link_to("Show",{:action => "show"}) %>
+<% end %>
+
+<h2>Please leave a comment:</h2>
+	<%= form_for([@issue, Post.new]) do |f| %>
+	<%= f.text_area :content, :rows => 3 %>
+	<div class="actions">
+		<%= f.submit "Post a Comment"%>
+	</div>
+	<% end %>
+	
+	<% if @issue.posts.empty? %>
+		<h3>You are the first  to comment </h3>
+	<% else %>
+		<h2>What others felt about this:</h2>
+		<% @issue.posts.reverse.each do |post| %>
+			<p>Posted <%= time_ago_in_words(post.created_at) %> ago by <%= post.user.username %></p>
+			<p></p>
+			<p><%= post.content %></p>
+			<p></p>
+			<p><%= link_to 'Edit Comment', edit_issue_post_path(@issue, post) %></p>
+			<p><%= link_to "delete", [@issue, post], :method => :delete, :confirm => "Are you sure?" %></p>
+			<p></p>
+		<% end %>
+	<% end %>
+
+</div>
+
+
+

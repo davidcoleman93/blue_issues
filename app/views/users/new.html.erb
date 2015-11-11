@@ -1,0 +1,57 @@
+
+<div class=<"users new">
+<h2>Create User</h2>
+<%= error_messages_for(@user) %>
+<%= bootstrap_form_for(:user, :url => {:action => "create"}) do |f| %>
+	<table summary="User form fields">
+    <tr>
+	<th>First Name</th>
+	<td><%= f.text_field(:first_name) %></td>
+	</tr>
+	<tr>
+	<th>Last Name</th>
+	<td><%= f.text_field(:last_name) %></td>
+    </tr>
+	<tr>
+	<th>Title</th>
+	<td><%= f.text_field(:title) %></td>
+    </tr>
+	<th>Username</th>
+	<td><%= f.text_field(:username) %></td>
+    </tr>
+	<th>Password</th>
+	<td><%= f.password_field(:password) %></td>
+    </tr>
+	<th>Confirm Password</th>
+	<td><%= f.password_field(:password_confirmation) %></td>
+    </tr>
+	<tr>
+	<tr>
+	<th>Email</th>
+	<td><%= f.text_field(:email) %></td>
+    </tr>
+	<tr>
+	<th>DOB</th>
+	<td><%= f.date_select(:DOB, :order => [:day, :month, :year], :start_year => 2015, :end_year => 1910) %></td>
+    </tr>
+	<th>Phone Number</th>
+	<td><%= f.text_field(:phone_number) %></td>
+    </tr>
+	<th>Department</th>
+	<td><%= f.collection_select( :department_id, Department.all, :id, :dept_name, {}, { :multiple => false } ) %></td>
+	</tr>
+	<th>Admin?</th>
+	<td><%= f.select :admin, [["Yes", 1], ["No", 0]] %></td>
+    </tr>
+	<th>Manage?</th>
+	<td><%= f.select :manage, [["Yes", 1], ["No", 0]] %></td>
+    </tr>
+	<th>Normal?</th>
+	<td><%= f.select :normal, [["Yes", 1], ["No", 0]] %></td>
+    </tr>
+	</table>
+	<button type="submit" class="btn btn-primary">
+	Create User
+	</button>
+<% end %>
+</div>

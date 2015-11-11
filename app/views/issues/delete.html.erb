@@ -1,0 +1,20 @@
+<div class="issues delete">
+<h1>Delete Issue</h1>
+<%= form_tag issue_path(@issue), method: "delete" do |f| %>
+<p>Are you sure you want to permanently delete this issue?</p>
+
+<p class="reference-name><%= @issue.title %></p>
+
+<div class="form-buttons">
+
+<button type="submit" class="btn btn-danger">
+	Delete Issue
+	</button>
+</div>
+
+<% end %>
+<% if can? :read, @issue%>
+	<%= link_to("Show",{:action => "show"}) %>
+<% end %>
+</div>
+

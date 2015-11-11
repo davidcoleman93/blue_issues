@@ -1,0 +1,138 @@
+<% if !flash[:notice].blank? %>
+	<div class="notice">
+		<%= flash[:notice] %>
+	</div>
+<% end %>
+
+<div class="issues mytasks">
+<h1>My Tasks</h1>
+
+<h3>Unaccepted Issues (<%= @notAccepted.count %>)</h3>
+<table class ="table table-hover table-bordered" summary="Unaccepted Issues list">
+
+<% if @notAccepted.empty? %>
+	<th>No Unaccepted Issues</th>
+<% else %>
+<tr class = "header">
+	<th>&nbsp;</th>
+	<th>Title</th>
+	<th>Priority</th>
+	<th>Summary</th>
+	<th>Status</th>
+	<th>Created By</th>
+	<th>Assigned To</th>
+	<th>Time To Complete (Hours)</th>
+	<th>Accepted?</th>
+	
+
+<% @notAccepted.each do  |issue| %>
+	<% if issue.priority == "High" %>
+		<tr class="danger">
+	<% elsif issue.priority == "Medium" %>
+		<tr class="info">
+	<% else %>
+		<tr class="success">
+	<% end %>
+<td>
+</td>
+		<td><%= issue.title %></td>
+	    		
+		<td><%= issue.priority %></td>
+		
+		
+		<td><%= issue.summary %></td>
+		
+		<td><%= issue.status %></td>
+		
+		<td><%= issue.creator.username %></td>
+		
+		<td><%= issue.assignee.username %></td>
+		<%= form_for issue do |f| %>
+		
+		<td><%= f.text_field(:time_to_complete) %></td>
+		
+		<td><%= f.select :accepted, [["Yes", 1], ["No", 0]] %></td>
+		<td>
+		<div class="actions">
+			<%= f.submit %>
+		</div>
+		</td>
+		<% end %>
+		
+		<td class = "actions">
+			<%= link_to("Show", {:action => "show" , :id => issue.id }, :class => "action show") %>
+			<%= link_to("Edit", {:action => "edit" , :id => issue.id }, :class => "action edit") %>
+			<%= link_to("Delete", {:action => "delete" , :id  => issue.id }, :class => "action delete") %>
+		</td>	
+	</tr>
+   <% end %>
+  <% end %>
+  </table>
+  
+<h3>Accepted Issues (<%= @issues.count %>)</h3>
+<table class ="table table-hover table-bordered" summary="My Issues list">
+<% if @issues.empty? %>
+	<th>No Accepted Issues</th>
+<% else %>
+<tr class = "header">
+	<th>&nbsp;</th>
+	<th>Title</th>
+	<th>Priority</th>
+	<th>Summary</th>
+	<th>Status</th>
+	<th>Hours (TTC)</th>
+	<th>Created By</th>
+	<th>Age of Issue</th>
+	<th>Active Issue</th>
+	
+<% @issues.each do |issue| %>
+
+<% if (time_ago_in_words(issue.updated_at).include? "month") || (time_ago_in_words(issue.updated_at).include? "year") ||  (time_ago_in_words(issue.updated_at).to_i >= 7) %>
+	<tr class="warning">
+<% else %>
+	<% if issue.priority == "High" %>
+		<tr class="danger">
+	<% elsif issue.priority == "Medium" %>
+		<tr class="info">
+	<% else %>
+		<tr class="success">
+	<% end %>
+<% end %>
+<td>
+</td>
+		<td><%= issue.title %></td>
+	    		
+		<td><%= issue.priority %></td>
+		
+		<td><%= issue.summary %></td>
+		
+		<td><%= issue.status %></td>
+		
+		<td><%= issue.time_to_complete %></td>
+		
+		<td><%= issue.creator.username %></td>
+		
+		<td><%= time_ago_in_words(issue.updated_at) %></td>
+		
+		<td><%= issue.active_issue %></td>
+		
+		<%= form_for issue do |f| %>
+		
+		<td><%= f.select :active_issue, [["Yes", 1], ["No", 0]] %></td>
+		<td>
+		<button type="submit" class="btn btn-primary">
+			Update Activity
+		</button>
+		</td>
+		<% end %>
+		
+		<td class = "actions">
+			<%= link_to("Show", {:action => "show" , :id => issue.id }, :class => "action show") %>
+			<%= link_to("Edit", {:action => "edit" , :id => issue.id }, :class => "action edit") %>
+			<%= link_to("Delete", {:action => "delete" , :id  => issue.id }, :class => "action delete") %>
+		</td>	
+	</tr>
+   <% end %>
+   <% end %>
+  </table>
+ </div>

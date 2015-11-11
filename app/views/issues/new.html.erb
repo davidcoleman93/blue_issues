@@ -1,0 +1,30 @@
+<h1>New Issue</h1>
+
+<div class=<"issues new">
+<%= error_messages_for(@issue) %>
+<%= bootstrap_form_for(:issue, :url => {:action => "create"}) do |f| %>
+	<table summary="Issue form fields">
+    <tr>
+	<th>Title</th>
+	<td><%= f.text_field(:title) %></td>
+    </tr>
+	<tr>
+	<th>Priority</th>
+	<td><%= f.select :priority, ["High", "Medium", "Low"] %></td>
+    </tr>
+	<tr>
+	<tr>
+	<th>Summary</th>
+	<td><%= f.text_area(:summary) %></td>
+    </tr>
+	<tr>
+	<th>Assigned To</th>
+	<td><%= f.collection_select(:assigned_to, Department.all, :id, :dept_name, {}, { :multiple => false } ) %></td>
+    </tr>
+	<tr>
+	</table>
+	<button type="submit" class="btn btn-primary">
+	Create Issue
+	</button>
+<% end %>
+</div>

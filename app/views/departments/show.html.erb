@@ -1,0 +1,18 @@
+<% if !flash[:notice].blank? %>
+	<div class="notice">
+		<%= flash[:notice] %>
+	</div>
+<% end %>
+
+<div class=”department show”>
+	<h2>Show Department</h2>
+	<table summary = “Department detail view”>
+	<tr>
+		<th>Department Name</th>
+		<td><%= @department.dept_name %></td>
+	    </tr>
+		<th>Department Manager</th>
+		<td><%= @department.manager.username %></td>
+	    </tr>
+	</table>
+<%= link_to("Back to departments",{:action => "index"}) %>

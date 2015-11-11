@@ -1,0 +1,16 @@
+<div class="users delete">
+<h1>Delete User</h1>
+<%= form_tag user_path(@user), method: "delete" do |f| %>
+<p>Are you sure you want to permantly delete this user?</p>
+
+<p class="reference-name><%= @user.first_name %> <%= @user.last_name %></p>
+
+<div class="form-buttons">
+
+<button type="submit" class="btn btn-danger">
+	Delete User
+	</button>
+</div>
+
+<% end %>
+</div>

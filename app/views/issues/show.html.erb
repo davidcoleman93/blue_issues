@@ -1,0 +1,101 @@
+<% if !flash[:notice].blank? %>
+	<div class="notice">
+		<%= flash[:notice] %>
+	</div>
+<% end %>
+<table class='table borderless'>
+<td>
+<div class=”issues show”>
+	<h2>Show Issue</h2>
+	<table summary = “Issue detail view”>
+	     <tr>
+		<th>Title</th>
+		<td><%= @issue.title %></td>
+	    </tr>
+		<th>Priority</th>
+		<td><%= @issue.priority %></td>
+	    </tr>
+		<th>Summary</th>
+		<td><%= @issue.summary %></td>
+	    </tr>
+		<th>Status</th>
+		<td><%= @issue.status %></td>
+	    </tr>
+		<th>Assigned To</th>
+		<td><%= @issue.assignee.username %></td>
+		</tr>
+		<th>Time To Complete (Hours)</th>
+		<td><%= @issue.time_to_complete %></td>
+		</tr>
+		<th>Accepted?</th>
+		<td><%= @issue.accepted %></td>
+	    </tr>
+		<th>Created By</th>
+		<td><%= @issue.creator.username %></td>
+	</table>
+	
+	<% if can? :update, @issue%>
+		<%= link_to("Edit", {:action => "edit" , :id => @issue.id }, :class => "action edit") %>
+	<% end %>
+	<% if can? :destroy, @issue%>
+		<%= link_to("Delete", {:action => "delete" , :id  => @issue.id }, :class => "action delete") %>
+	<% end %>
+	</td>
+	<td>
+	<% if @issue.watchers.empty? %>
+		<h3>No watchers. </h3>
+	<% else %>
+		<h2>Current Watchers!!!!:</h2>
+		<% @issue.watchers.reverse.each do |watcher| %>
+			<p><%= watcher.user.username + "  " %> <%= link_to "delete", [@issue, watcher], :method => :delete, :confirm => "Are you sure?" %></p>
+			<p></p>
+		<% end %>
+	<% end %>
+	
+	<%= form_for([@issue, Watcher.new]) do |f| %>
+	<div class="actions">
+		<%= f.collection_select(:user_id, User.all, :id, :username, {}, { :multiple => false } ) %>
+		<%= f.submit "Add Watcher"%>
+	</div>
+	<% end %>
+	</td>
+	<td>
+	<h2>Please leave a comment:</h2>
+	<%= form_for([@issue, Post.new]) do |f| %>
+	<%= f.text_area :content, :rows => 3 %>
+	<div class="actions">
+		<%= f.submit "Post a Comment"%>
+	</div>
+	<% end %>
+	
+	<% if @issue.posts.empty? %>
+		<h3>You are the first  to comment </h3>
+	<% else %>
+		<h2>Comments:</h2>
+		<% @issue.posts.reverse.each do |post| %>
+			<p>Posted <%= time_ago_in_words(post.created_at) %> ago by <%= post.user.username %></p>
+			<p></p>
+			<p><%= post.content %></p>
+			<p></p>
+			<p><%= link_to 'Edit Comment', edit_issue_post_path(@issue, post) %></p>
+			<p><%= link_to "delete", [@issue, post], :method => :delete, :confirm => "Are you sure?" %></p>
+			<p></p>
+		<% end %>
+	<% end %>
+	</td>
+	<td>
+	<h2>Log</h2>
+	<% if @issue.issue_logs.empty? %>
+		<h3>No log entrys. </h3>
+	<% else %>
+		<h2>Log entrys:</h2>
+		<% @issue.issue_logs.reverse.each do |issue_log| %>
+			<p>Occured <%= time_ago_in_words(issue_log.created_at) %> ago by <%= issue_log.user.username %></p>
+			<p></p>
+			<p><%= issue_log.content %></p>
+			<p></p>
+		<% end %>
+	<% end %>
+	</td>
+</table>
+

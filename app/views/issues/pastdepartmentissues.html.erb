@@ -1,0 +1,74 @@
+<% if !flash[:notice].blank? %>
+	<div class="notice">
+		<%= flash[:notice] %>
+	</div>
+<% end %>
+
+<div class="issues pastdepartmentissues">
+
+<h3>Past Department Issues (<%= @departmentIssues.count %>)</h3>
+<table class ="table table-hover table-bordered" summary="Department Issues list">
+
+
+<% @departmentIssues.each do  |issue| %>
+<tr>
+
+<% @users.each do |user| %>
+	<% @departmentIssues.each do  |issue| %>
+		<% if user.id == issue.assigned_to %>
+			<% @issueCount = @issueCount + 1 %>
+			<% @totalHours = @totalHours + issue.time_to_complete %>
+		<% end %>
+	<% end %>
+	<% if user.id == issue.assigned_to %>
+		<tr class = "header">
+			<th class = "info"><%= user.username %></th>
+			<th>Title</th>
+			<th>Priority</th>
+			<th>Summary</th>
+			<th>Status</th>
+			<th>Assigned To</th>
+			<th>Time To Complete (Hours)</th>
+			<th>Created By</th>
+			<th>Active Issue</th>
+	<% end %>
+	<% @issueCount = 0 %>
+	<% @totalHours = 0 %>
+<% end %>
+<% if (time_ago_in_words(issue.updated_at).include? "month") || (time_ago_in_words(issue.updated_at).include? "year") ||  (time_ago_in_words(issue.updated_at).to_i >= 7) %>
+	<tr class="warning">
+<% else %>
+	<% if issue.priority == "High" %>
+		<tr class="danger">
+	<% elsif issue.priority == "Medium" %>
+		<tr class="info">
+	<% else %>
+		<tr class="success">
+	<% end %>
+<% end %>
+		<td></td>
+		<td><%= issue.title %></td>
+	    		
+		<td><%= issue.priority %></td>
+		
+		<td><%= issue.summary %></td>
+		
+		<td><%= issue.status %></td>
+		
+		<td><%= issue.assignee.username %></td>
+		
+		<td><%= issue.time_to_complete %></td>
+		
+		<td><%= issue.creator.username %></td>
+		
+		<td><%= issue.active_issue %></td>
+		
+		<td class = "actions">
+			<%= link_to("Show", {:action => "show" , :id => issue.id }, :class => "action show") %>
+			<%= link_to("Edit", {:action => "edit" , :id => issue.id }, :class => "action edit") %>
+			<%= link_to("Delete", {:action => "delete" , :id  => issue.id }, :class => "action delete") %>
+		</td>	
+	</tr>
+	<% end %>
+	 </table>
+ </div>

@@ -1,0 +1,66 @@
+<% if !flash[:notice].blank? %>
+	<div class="notice">
+		<%= flash[:notice] %>
+	</div>
+<% end %>
+
+<head>
+  <title>Simple Search Form</title>
+</head>
+<body>
+<%= form_tag(issues_path, :method => "get", :class => "navbar-form", :id => "search-form") do%>
+    <div class="input-append">
+      <%= text_field_tag :search, params[:search], :class => "span2", :placeholder => "Search ISSUES" %>
+	  
+	  <%= select_tag :type, "<option>Title</option><option>Priority</option><option>Status</option><option>Assignee</option>".html_safe%>
+	  <br />
+      <input type="submit" id="search" value="Search"/>
+    </div>
+<% end %>
+</body>
+
+<div class="issues index">
+<h1>Issues</h1>
+
+<table class ="table table-hover table-bordered" summary="Issue list">
+<tr class = "header">
+	<th>&nbsp;</th>
+	<th>Title</th>
+	<th>Priority</th>
+	<th>Summary</th>
+	<th>Status</th>
+	<th>Assigned To</th>
+	<th>Time To Complete (Hours)</th>
+	<th>Created By</th>
+	
+<% @issues.each do |issue| %>
+<tr>
+<td>
+</td>
+		<td><%= issue.title %></td>
+	    		
+		<td><%= issue.priority %></td>
+		
+		<td><%= issue.summary %></td>
+		
+		<td><%= issue.status %></td>
+		
+		<td><%= issue.assignee.username %></td>
+		
+		<td><%= issue.time_to_complete %></td>
+		
+		
+		<td class = "actions">
+			<%= link_to("Show", {:action => "show" , :id => issue.id }, :class => "action show") %>
+			<% if can? :update, issue%>
+				<%= link_to("Edit", {:action => "edit" , :id => issue.id }, :class => "action edit") %>
+			<% end %>
+			<% if can? :destroy, issue%>
+				<%= link_to("Delete", {:action => "delete" , :id  => issue.id }, :class => "action delete") %>
+			<% end %>
+				
+		</td>	
+	</tr>
+   <% end %>
+  </table>
+ </div>

@@ -1,0 +1,16 @@
+<div class="departments delete">
+<h1>Delete Department</h1>
+<%= form_tag department_path(@department), method: "delete" do |f| %>
+<p>Are you sure you want to permantly delete this department?</p>
+
+<p class="reference-name><%= @department.dept_name %></p>
+
+<div class="form-buttons">
+
+<button type="submit" class="btn btn-danger">
+	Delete department
+	</button>
+</div>
+
+<% end %>
+</div>

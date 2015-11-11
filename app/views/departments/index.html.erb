@@ -1,0 +1,39 @@
+<% if !flash[:notice].blank? %>
+	<div class="notice">
+		<%= flash[:notice] %>
+	</div>
+<% end %>
+
+<div class="departments index">
+<h1>Departments</h1>
+
+<%= link_to("New Department",{:action => "new"}) %>
+
+<table class ="table table-hover table-bordered" summary="Department list">
+<tr class = "header">
+	<th>&nbsp;</th>
+	<th>Department Name</th>
+	<th>Department Manager</th>
+<% @departments.each do |department| %>
+<tr>
+<td>
+</td>
+		<td><%= department.dept_name %></td>
+	    		
+		<td><%= department.manager.username %></td>
+		
+		<td class = "actions">
+			<% if can? :read, department%>
+				<%= link_to("Show", {:action => "show" , :id => department.id }, :class => "action show") %>
+			<% end %>
+			<% if can? :update, department%>
+				<%= link_to("Edit", {:action => "edit" , :id => department.id }, :class => "action edit") %>
+			<% end %>
+			<% if can? :destroy, department%>
+				<%= link_to("Delete", {:action => "delete" , :id  => department.id }, :class => "action delete") %>
+			<% end %>
+		</td>
+	</tr>
+   <% end %>
+  </table>
+ </div>

@@ -1,0 +1,47 @@
+<% if !flash[:notice].blank? %>
+	<div class="notice">
+		<%= flash[:notice] %>
+	</div>
+<% end %>
+
+<div class="issues mypasttasks">
+  
+<h3>My Past Tasks (<%= @issues.count %>)</h3>
+<table class ="listing" summary="My Issues list">
+<tr class = "header">
+	<th>&nbsp;</th>
+	<th>Title</th>
+	<th>Priority</th>
+	<th>Summary</th>
+	<th>Status</th>
+	<th>Assigned To</th>
+	<th>Time To Complete (Hours)</th>
+	<th>Created By</th>
+	
+<% @issues.each do |issue| %>
+<tr>
+<td>
+</td>
+		<td><%= issue.title %></td>
+	    		
+		<td><%= issue.priority %></td>
+		
+		<td><%= issue.summary %></td>
+		
+		<td><%= issue.status %></td>
+		
+		<td><%= issue.assignee.username %></td>
+		
+		<td><%= issue.time_to_complete %></td>
+		
+		<td><%= issue.creator.username %></td>
+		
+		<td class = "actions">
+			<%= link_to("Show", {:action => "show" , :id => issue.id }, :class => "action show") %>
+			<%= link_to("Edit", {:action => "edit" , :id => issue.id }, :class => "action edit") %>
+			<%= link_to("Delete", {:action => "delete" , :id  => issue.id }, :class => "action delete") %>
+		</td>	
+	</tr>
+   <% end %>
+  </table>
+ </div>

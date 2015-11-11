@@ -1,0 +1,14 @@
+<h2>Edit Issue</h2>
+<div class=”posts edit”>
+<%= bootstrap_form_for [@issue, @post] do |f| %>
+	<table summary="Issue form fields">
+    <tr>
+	<th>Content</th>
+	<td><%= f.text_area(:content) %></td>
+    </tr>
+	</table>
+	<button type="submit" class="btn btn-primary">
+	Update Department
+	</button>
+<% end %>
+</div>

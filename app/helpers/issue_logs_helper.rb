@@ -1,0 +1,2 @@
+module IssueLogsHelper
+end
